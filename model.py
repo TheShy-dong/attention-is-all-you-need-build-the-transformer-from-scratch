@@ -122,7 +122,7 @@ import torch
 def split_last_dim_into_heads(tensor, num_heads):
     # TODO: reshape (B, L, d_model) into (B, L, num_heads, d_model // num_heads)
     B,L,d_model=tensor.shape
-    return tensor.view(B,L,num_heads,d_model//num_heads)
+    return tensor.reshape(B,L,num_heads,d_model//num_heads)
     pass
 
 # Step 24 - transpose_heads_before_sequence (not yet solved)
