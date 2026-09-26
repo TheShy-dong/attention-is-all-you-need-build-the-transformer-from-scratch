@@ -172,8 +172,18 @@ def split_qkv_into_heads(q, k, v, num_heads):
     return transpose_heads_before_sequence(q_split),transpose_heads_before_sequence(k_split),transpose_heads_before_sequence(v_split)
     pass
 
-# Step 29 - multi_head_scaled_dot_product_attention (not yet solved)
-# TODO: implement
+# Step 29 - multi_head_scaled_dot_product_attention
+import torch
+import math
+def multi_head_scaled_dot_product_attention(q_h, k_h, v_h, mask=None):
+    # TODO: run scaled dot-product attention over per-head Q, K, V and return (context, weights)
+    d_k=q_h.shape[-1]
+    scores=q_h@k_h.transpose(-1,-2)/math.sqrt(d_k)
+    if mask is not None:
+        scores.masked_fill_(~mask,-float("inf"))
+    weights=torch.softmax(scores,dim=-1)
+    return weights@v_h,weights
+    pass
 
 # Step 30 - merge_heads_and_project_output (not yet solved)
 # TODO: implement
