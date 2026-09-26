@@ -194,8 +194,33 @@ def merge_heads_and_project_output(context, w_o, b_o):
     return apply_linear_projection(attention,w_o,b_o)
     pass
 
-# Step 31 - assemble_multi_head_attention_forward (not yet solved)
-# TODO: implement
+# Step 31 - assemble_multi_head_attention_forward
+import math
+def assemble_multi_head_attention_forward(query, key, value, w_q, w_k, w_v, w_o, num_heads, mask=None):
+    # TODO: project Q/K/V, split into heads, run scaled dot-product attention, merge heads, output projection.
+    Q=query@w_q
+    K=key@w_k
+    V=value@w_v
+    B,q_len,d_model=Q.shape
+    _,kv_len,_=K.shape
+    d_k=d_model//num_heads
+    Q=Q.reshape(B,q_len,num_heads,d_k)
+    K=K.reshape(B,kv_len,num_heads,d_k)
+    V=V.reshape(B,kv_len,num_heads,d_k)
+    Q=Q.transpose(1,2)
+    K=K.transpose(1,2)
+    V=V.transpose(1,2)
+    scores=Q@K.transpose(-1,-2)/math.sqrt(d_k)    #shape:(B,num_heads,seq_len,seq_len)
+    if mask is not None:
+        scores.masked_fill_(~mask,-float("inf"))
+    weights=torch.softmax(scores,dim=-1)#shape:(B,num_heads,seq_len,d_v)
+    context=weights@V
+    context=context.transpose(1,2).contiguous().view(B,q_len,d_model)
+    return context@w_o
+
+
+
+    pass
 
 # Step 32 - apply_ffn_first_linear_and_relu (not yet solved)
 # TODO: implement
