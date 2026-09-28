@@ -222,8 +222,11 @@ def assemble_multi_head_attention_forward(query, key, value, w_q, w_k, w_v, w_o,
 
     pass
 
-# Step 32 - apply_ffn_first_linear_and_relu (not yet solved)
-# TODO: implement
+# Step 32 - apply_ffn_first_linear_and_relu
+def apply_ffn_first_linear_and_relu(x, w1, b1):
+    # TODO: project x by w1, add b1, then apply a ReLU activation.
+    return torch.relu(x@w1+b1)
+    pass
 
 # Step 33 - apply_ffn_second_linear (not yet solved)
 # TODO: implement
@@ -328,6 +331,9 @@ def assemble_multi_head_attention_forward(query, key, value, w_q, w_k, w_v, w_o,
 # TODO: implement
 
 # Step 67 - apply_adam_bias_correction (not yet solved)
+# TODO: implement
+
+# Step 68 - compute_adam_parameter_update (not yet solved)
 # TODO: implement
 
 # Step 69 - apply_adam_step_to_all_parameters (not yet solved)
